@@ -11,8 +11,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({ value, onChange }) => (
       type="text"
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      placeholder="Search..."
-      className="w-[40%] px-4 py-2 border border-gray-300 rounded"
+      placeholder="Search for any data..."
+      className="w-[80%] md:w-[40%]  px-4 py-2 border border-gray-300 rounded"
     />
   </div>
 );

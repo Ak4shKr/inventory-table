@@ -1,52 +1,95 @@
-// app/page.tsx
 "use client";
-import { Navbar } from "@/components/navbar";
-import { Table, Column } from "@/components/Table/table";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Component } from "../types/type";
+import { Column, Component, TableData } from "../types/type";
+import { Navbar } from "@/components/navbar";
+import { Table } from "@/components/Table/table";
 
 const columns: Column[] = [
-  { accessor: "component_id", label: "Component ID" },
   { accessor: "component_name", label: "Component Name" },
-  { accessor: "subcomponent_name", label: "SubComponent Name" },
+  { accessor: "subcomponent_name", label: "Subcomponent" },
+  { accessor: "subcomponent_id", label: "ID" },
   { accessor: "sku_code", label: "SKU" },
-  { accessor: "hsn_code", label: "HSN Code" },
-  { accessor: "updated_at", label: "Updated At" },
-  { accessor: "created_at", label: "Created At" },
+  { accessor: "damaged_quantity", label: "Damaged" },
+  { accessor: "discarded_quantity", label: "Discarded" },
+  { accessor: "total_quantity", label: "Quantity" },
+  { accessor: "last_updated", label: "Last Updated" },
 ];
 
 export default function Home() {
-  const [tabledata, setTabledata] = useState<
-    Record<string, string | number | boolean | null>[]
-  >([]);
+  const [tableData, setTableData] = useState<TableData[]>([]);
 
   useEffect(() => {
-    const fetchdata = async () => {
-      const data = await axios.get("/api/inventory");
-      const transformedData = data.data.map((item: Component) => ({
-        component_id: item.component_id,
-        component_name: item.component_name,
-        subcomponent_name: item.subcomponents
-          ?.map((sub) => sub.component_name)
-          .join(", "), // Join subcomponent names into a single string
-        sku_code: item.sku_code,
-        hsn_code: item.hsn_code,
-        updated_at: item.updated_at,
-        created_at: item.created_at,
-      }));
-      setTabledata(transformedData);
-      console.log(data.data);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/inventory");
+        const data: Component[] = response.data;
+        console.log("Fetched data:", data);
+
+        // Track seen component IDs to avoid duplicates
+        const seenComponentIds = new Set<string>();
+        const seenSubcomponentIds = new Set<string>();
+
+        const transformedData = data.flatMap((item: Component) => {
+          if (seenComponentIds.has(item.component_id)) {
+            return [];
+          }
+          seenComponentIds.add(item.component_id);
+
+          if (!item.subcomponents || item.subcomponents.length === 0) {
+            return [
+              {
+                component_name: item.component_name,
+                component_id: item.component_id,
+                subcomponent_name: "-",
+                subcomponent_id: "-",
+                damaged_quantity: "-",
+                discarded_quantity: "-",
+                sku_code: item.sku_code || "-",
+                total_quantity: "-",
+                last_updated: item.updated_at?.split("T")[0] || "-",
+                rowSpan: 1,
+              },
+            ];
+          }
+
+          return item.subcomponents
+            .map((sub, index) => {
+              if (seenSubcomponentIds.has(sub.component_id)) {
+                return null;
+              }
+              seenSubcomponentIds.add(sub.component_id);
+
+              return {
+                component_name: item.component_name,
+                component_id: item.component_id,
+                subcomponent_name: sub.component_name,
+                subcomponent_id: sub.component_id,
+                damaged_quantity: sub.damaged_quantity || "-",
+                discarded_quantity: sub.discarded_quantity || "-",
+                sku_code: sub.sku_code || "-",
+                total_quantity: sub.total_quantity || "-",
+                last_updated: sub.last_updated?.split("T")[0] || "-",
+                rowSpan: index === 0 ? item?.subcomponents?.length : 0,
+              };
+            })
+            .filter(Boolean);
+        });
+
+        setTableData(transformedData.filter(Boolean) as TableData[]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
-    fetchdata();
+    fetchData();
   }, []);
 
   return (
     <>
       <Navbar />
       <main className="min-h-screen p-6">
-        <Table data={tabledata} columns={columns} pageSize={5} />
+        <Table data={tableData} columns={columns} />
       </main>
     </>
   );

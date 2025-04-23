@@ -1,5 +1,5 @@
+import { Column } from "@/types/type";
 import React from "react";
-import { Column } from "./table";
 
 interface TableHeaderProps {
   columns: Column[];
