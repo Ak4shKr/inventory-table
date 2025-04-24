@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📦 Inventory Management System
+![Screenshot 2025-04-24 000123](https://github.com/user-attachments/assets/119587de-6b10-4166-ba1f-d71379698c3e)
+  
+*A modern solution for tracking components and subcomponents*
 
-## Getting Started
+## 🌟 Introduction
 
-First, run the development server:
+The Inventory Management System is a full-featured web application designed to efficiently track and manage inventory items with parent-child relationships. Built with modern web technologies, it offers:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Real-time search and filtering
+- Intuitive data organization
+- Responsive design for all devices
+- Optimized performance for large datasets
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠️ Technologies Used
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Frontend Stack
+| Technology | Purpose |
+|------------|---------|
+| Next.js 15 | App Router & SSR |
+| React 18 | UI Components |
+| TypeScript | Type Safety |
+| Tailwind CSS | Styling |
+| Lucide Icons | SVG Icons |
+| next-themes | Dark/Light Mode |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Development Tools
+- ESLint + Prettier: Code quality
+- Jest: Testing
+- Vercel/GitHub: CI/CD
 
-## Learn More
+## performance optimise
+![Screenshot 2025-04-24 000312](https://github.com/user-attachments/assets/b493ca68-e55e-434a-87b0-d2b7afd9b99b)
 
-To learn more about Next.js, take a look at the following resources:
+## toggle theme/dark
+![Screenshot 2025-04-24 000136](https://github.com/user-attachments/assets/f859aed6-3cd5-4cfe-b009-906ddd3b60be)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Responsive
+![Screenshot 2025-04-24 000216](https://github.com/user-attachments/assets/3fce901e-7b55-4225-a0c5-c5d16c54c7dd)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## search filter
+![Screenshot 2025-04-24 000152](https://github.com/user-attachments/assets/40c728c2-58cb-47f1-bad9-68b13fe65c65)
 
-## Deploy on Vercel
+### modular project structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Structure Details:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **`app/`** - Next.js application directory
+   - `api/`: Contains all API route handlers
+   - `page.tsx`: Entry point for the main view
+   - `layout.tsx`: where initialise child with main content
+
+2. **`components/`** - Reusable components
+   - `Table/`: Dedicated table-related components
+   - `Navbar/`: Shared Navbar components
+   - `ThemeToggler/`: Shared ThemeToggler components
+     
+
+3. **`types/`** - TypeScript definitions
+   - Centralized type definitions for components
+
+4. **`public/`** - Static files
+   - Served directly at the root path
+
+## 🛠️ Cloning the Application
+
+### Prerequisites
+Before cloning, ensure you have:
+- [Git](https://git-scm.com/) installed
+- [Node.js](https://nodejs.org/) (v18 or higher) installed
+- [npm](https://www.npmjs.com/) (v9 or higher) or [yarn](https://yarnpkg.com/) installed
+
+### Clone the Repository
+
+1. **Open your terminal** (Command Prompt, PowerShell, or Terminal)
+
+2. **Run the clone command and installtion**:
+   ```bash
+   git clone https://github.com/Ak4shKr/inventory-table
+   npm install
+   npm run dev
+   ```
+
+3. ** use API for dummy data
+     ** https://dev.electorq.com/dummy/inventory
+
