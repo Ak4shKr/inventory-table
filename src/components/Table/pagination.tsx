@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 
 interface PaginationProps {
   currentPage: number;
@@ -9,17 +8,17 @@ interface PaginationProps {
   onItemsPerPageChange: (items: number) => void;
 }
 
-export const Pagination: React.FC<PaginationProps> = ({
+export const Pagination = ({
   currentPage,
   totalPages,
   itemsPerPage,
   onPageChange,
   onItemsPerPageChange,
-}) => {
+}: PaginationProps) => {
   const itemsPerPageOptions = [10, 20, 50];
 
   return (
-    <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-4 p-4">
+    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mt-4 p-4">
       <div className="flex items-center gap-2">
         <span className="text-sm">Items per page:</span>
         <select
@@ -41,7 +40,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-3 py-1 border rounded disabled:opacity-50"
+          className="px-3 py-1 border rounded disabled:opacity-50 cursor-pointer"
         >
           &lt;
         </button>
@@ -50,7 +49,7 @@ export const Pagination: React.FC<PaginationProps> = ({
           <button
             key={page}
             onClick={() => onPageChange(page)}
-            className={`px-3 py-1 border rounded ${
+            className={`px-3 py-1 border rounded cursor-pointer ${
               currentPage === page ? "bg-blue-500 text-white" : ""
             }`}
           >
@@ -61,7 +60,7 @@ export const Pagination: React.FC<PaginationProps> = ({
         <button
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-3 py-1 border rounded disabled:opacity-50"
+          className="px-3 py-1 border rounded disabled:opacity-50 cursor-pointer"
         >
           &gt;
         </button>

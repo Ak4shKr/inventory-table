@@ -1,12 +1,11 @@
 import { Column, TableData } from "@/types/type";
-import React from "react";
 
 interface TableBodyProps {
   data: TableData[];
   columns: Column[];
 }
 
-export const TableBody: React.FC<TableBodyProps> = ({ data, columns }) => (
+export const TableBody = ({ data, columns }: TableBodyProps) => (
   <tbody>
     {data.map((row, index) => (
       <tr key={`${row.component_id}-${index}`} className="">

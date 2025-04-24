@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { SearchBar } from "./filteration";
 import { TableBody } from "./table-body";
 import { TableHeader } from "./table-header";
@@ -68,24 +68,23 @@ export const Table = ({ data, columns, pageSize = 10 }: TableProps) => {
   return (
     <div>
       <SearchBar value={globalSearch} onChange={setGlobalSearch} />
-      <div className="overflow-x-auto">
-        <table className="w-full border">
+      <div className="overflow-x-auto text-nowrap">
+        <table className="w-full border my-4 shadow-lg ">
           <TableHeader columns={columns} />
           <TableBody data={paginatedData} columns={columns} />
         </table>
-
-        {filteredData.length > 0 ? (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            itemsPerPage={itemsPerPage}
-            onPageChange={handlePageChange}
-            onItemsPerPageChange={handleItemsPerPageChange}
-          />
-        ) : (
-          <div className="text-center py-4">No data found</div>
-        )}
       </div>
+      {filteredData.length > 0 ? (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          itemsPerPage={itemsPerPage}
+          onPageChange={handlePageChange}
+          onItemsPerPageChange={handleItemsPerPageChange}
+        />
+      ) : (
+        <div className="text-center py-4">No data found</div>
+      )}
     </div>
   );
 };

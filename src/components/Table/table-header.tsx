@@ -1,12 +1,11 @@
 import { Column } from "@/types/type";
-import React from "react";
 
 interface TableHeaderProps {
   columns: Column[];
   filters?: Record<string, string>;
 }
 
-export const TableHeader: React.FC<TableHeaderProps> = ({ columns }) => (
+export const TableHeader = ({ columns }: TableHeaderProps) => (
   <thead>
     <tr>
       {columns.map((col) => (

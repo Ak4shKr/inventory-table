@@ -12,7 +12,7 @@ const columns: Column[] = [
   { accessor: "sku_code", label: "SKU" },
   { accessor: "damaged_quantity", label: "Damaged" },
   { accessor: "discarded_quantity", label: "Discarded" },
-  { accessor: "total_quantity", label: "Quantity" },
+  { accessor: "total_quantity", label: "Available Qty" },
   { accessor: "last_updated", label: "Last Updated" },
 ];
 
@@ -30,51 +30,46 @@ export default function Home() {
         const seenComponentIds = new Set<string>();
         const seenSubcomponentIds = new Set<string>();
 
-        const transformedData = data.flatMap((item: Component) => {
-          if (seenComponentIds.has(item.component_id)) {
-            return [];
-          }
+        const transformedData: TableData[] = [];
+
+        for (const item of data) {
+          if (seenComponentIds.has(item.component_id)) continue;
           seenComponentIds.add(item.component_id);
 
           if (!item.subcomponents || item.subcomponents.length === 0) {
-            return [
-              {
-                component_name: item.component_name,
-                component_id: item.component_id,
-                subcomponent_name: "-",
-                subcomponent_id: "-",
-                damaged_quantity: "-",
-                discarded_quantity: "-",
-                sku_code: item.sku_code || "-",
-                total_quantity: "-",
-                last_updated: item.updated_at?.split("T")[0] || "-",
-                rowSpan: 1,
-              },
-            ];
+            transformedData.push({
+              component_name: item.component_name || "-",
+              component_id: item.component_id || "-",
+              subcomponent_name: "-",
+              subcomponent_id: "-",
+              damaged_quantity: "-",
+              discarded_quantity: "-",
+              sku_code: item.sku_code || "-",
+              total_quantity: "-",
+              last_updated: item.updated_at?.split("T")[0] || "-",
+              rowSpan: 1,
+            });
+            continue;
           }
 
-          return item.subcomponents
-            .map((sub, index) => {
-              if (seenSubcomponentIds.has(sub.component_id)) {
-                return null;
-              }
-              seenSubcomponentIds.add(sub.component_id);
+          item.subcomponents.forEach((sub, index) => {
+            if (seenSubcomponentIds.has(sub.component_id)) return;
+            seenSubcomponentIds.add(sub.component_id);
 
-              return {
-                component_name: item.component_name,
-                component_id: item.component_id,
-                subcomponent_name: sub.component_name,
-                subcomponent_id: sub.component_id,
-                damaged_quantity: sub.damaged_quantity || "-",
-                discarded_quantity: sub.discarded_quantity || "-",
-                sku_code: sub.sku_code || "-",
-                total_quantity: sub.total_quantity || "-",
-                last_updated: sub.last_updated?.split("T")[0] || "-",
-                rowSpan: index === 0 ? item?.subcomponents?.length : 0,
-              };
-            })
-            .filter(Boolean);
-        });
+            transformedData.push({
+              component_name: item.component_name,
+              component_id: item.component_id,
+              subcomponent_name: sub.component_name,
+              subcomponent_id: sub.component_id,
+              damaged_quantity: sub.damaged_quantity || "-",
+              discarded_quantity: sub.discarded_quantity || "-",
+              sku_code: sub.sku_code || "-",
+              total_quantity: sub.total_quantity || "-",
+              last_updated: sub.last_updated?.split("T")[0] || "-",
+              rowSpan: index === 0 ? item?.subcomponents?.length : 0,
+            });
+          });
+        }
 
         setTableData(transformedData.filter(Boolean) as TableData[]);
       } catch (error) {

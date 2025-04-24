@@ -19,3 +19,5 @@
   --primary-foreground: 255 255 255; /* white */
   --border: 64 64 64; /* neutral-700 */
 }
+
+@custom-variant dark (&:where(.dark, .dark *));
